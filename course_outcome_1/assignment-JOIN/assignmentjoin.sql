@@ -31,3 +31,31 @@ create table RATING (Mov_id varchar(9), Rev_Stars varchar(66) not null,
 FOREIGN KEY(Mov_id) REFERENCES MOVIES (Mov_id) on delete cascade) ;
 insert into RATING value('01','3'),('02','3'),('03','2'),('04','4'),('05','5');
 select Mov_Title from MOVIES where Dir_id in (select Dir_id from DIRECTOR where  Dir_Name='Hitchcock');
+2)select movies.mov_title,actor.act_id from 
+actor join movie_cast on actor.act_id=movie_cast.act_id 
+join movies on movie_cast.mov_id=movies.mov_id 
+where actor.act_id=( select actor.act_id from 
+actor join movie_cast on actor.act_id=movie_cast.act_id 
+join movies on movie_cast.mov_id=movies.mov_id group by actor.act_id 
+having count(mov_title)>1) 
+3)SELECT act_name 
+FROM ACTOR A 
+JOIN MOVIE_CAST C 
+ON A.act_id=C.act_id 
+JOIN MOVIES M 
+ON C.mov_id=M.mov_id 
+WHERE M.mov_year NOT BETWEEN 2000 AND 2015; 
+4)SELECT MOV_TITLE,MAX(REV_STARS) 
+FROM MOVIES 
+INNER JOIN RATING USING (MOV_ID) 
+GROUP BY MOV_TITLE 
+HAVING MAX(REV_STARS)>0 
+ORDER BY MOV_TITLE; 
+5)SET SQL_SAFE_UPDATES=0; 
+UPDATE RATING 
+SET REV_STARS=5 
+WHERE MOV_ID IN (SELECT MOV_ID FROM MOVIES 
+WHERE DIR_ID IN (SELECT DIR_ID 
+FROM DIRECTOR 
+WHERE DIR_NAME='Steven Spielberg')); 
+
