@@ -1,0 +1,18 @@
+create database dept;
+use dept;
+create table dept(deptno varchar(20) not null,dname varchar(20) not null,loc varchar(20) not null,service_type varchar(20) not null,primary key(deptno));
+call dept_desig('d001','don','kollam');
+call dept_desig('d002','farhana','ernakulam');
+select * from dept;
+
+#stored procedure
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `dept_desig`(dept_no int(30),dname varchar(34),loc varchar(34))
+BEGIN
+if(loc="kollam")
+then 
+insert into dept values(deptno,dname,loc,"hometown");
+else
+insert into dept values(deptno,dname,loc,"outsider");
+end if;
+END
